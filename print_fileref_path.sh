@@ -5,14 +5,21 @@
 # echo "The way to the reference file is : $file_ref"
 
 FILEREF=$1
-SWITCH=$2
-SWITCHTITLE=$(grep $SWITCH $FILEREF | grep "base port")
-NBPORT=$(grep $SWITCH $FILEREF | grep "base port" | awk '{print $2}')
+IBNET=$2
+SWITCH=$3
 
-echo "FILEREF is $1 and SWITCH is $2"
+LISTPORTSREF=$(mktemp /tmp/log.ibnetdiscoverref.XXXXXX)
+LISTPORTS=$(mktemp /tmp//home/qroyo/bash_project1/log.ibnetdiscover.XXXXXX)
 
-PRINT=$(grep -P '(?=.*$SWITCH)(?=.*base port)' -A 12 $FILEREF)
+# CREATE A TEMPORARY FILE WITH ALL CORRECT PORTS OF $SWITCH
+grep -P "(?=.*$SWITCH)(?=.*base port)" -A 100 ${FILEREF} | sed '/Mellanox Technologies Aggregation Node/q' > ${LISTPORTSREF}
 
-#echo "$SWITCHTITLE"
-echo "$NBPORT"
-echo "$PRINT"
+# CREATE A TEMPORARY FILE WITH ALL MISSING PORTS OF $SWITCH
+grep -P "(?=.*$SWITCH)(?=.*base port)" -A 100 ${IBNET} | sed '/Mellanox Technologies Aggregation Node/q' > ${LISTPORTS}
+
+TMP=$(diff ${LISTPORTSREF} ${LISTPORTS})
+
+echo ${TMP}
+
+# rm -f $LISTPORTSREF
+# rm -f $LISTPORTS
