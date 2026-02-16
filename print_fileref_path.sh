@@ -9,7 +9,7 @@ IBNET=$2
 SWITCH=$3
 
 LISTPORTSREF=$(mktemp /tmp/log.ibnetdiscoverref.XXXXXX)
-LISTPORTS=$(mktemp /tmp//home/qroyo/bash_project1/log.ibnetdiscover.XXXXXX)
+LISTPORTS=$(mktemp /tmp/log.ibnetdiscover.XXXXXX)
 
 # CREATE A TEMPORARY FILE WITH ALL CORRECT PORTS OF $SWITCH
 grep -P "(?=.*$SWITCH)(?=.*base port)" -A 100 ${FILEREF} | sed '/Mellanox Technologies Aggregation Node/q' > ${LISTPORTSREF}
