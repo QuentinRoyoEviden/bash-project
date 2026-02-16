@@ -17,7 +17,8 @@ grep -P "(?=.*$SWITCH)(?=.*base port)" -A 100 ${FILEREF} | sed '/Mellanox Techno
 # CREATE A TEMPORARY FILE WITH ALL MISSING PORTS OF $SWITCH
 grep -P "(?=.*$SWITCH)(?=.*base port)" -A 100 ${IBNET} | sed '/Mellanox Technologies Aggregation Node/q' > ${LISTPORTS}
 
-TMP=$(diff ${LISTPORTSREF} ${LISTPORTS})
+# COMPARE THE RESULTS OF THE TWO FILES AND DISPLAYS ONLY THE MISSING LINE(S)
+TMP=$(diff ${LISTPORTSREF} ${LISTPORTS} | grep "HDR$" | cut -c 3-)
 
 echo ${TMP}
 
