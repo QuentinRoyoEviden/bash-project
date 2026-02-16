@@ -20,7 +20,7 @@ grep -P "(?=.*$SWITCH)(?=.*base port)" -A 100 ${IBNET} | sed '/Mellanox Technolo
 # COMPARE THE RESULTS OF THE TWO FILES AND DISPLAYS ONLY THE MISSING LINE(S)
 TMP=$(diff ${LISTPORTSREF} ${LISTPORTS} | grep "HDR$" | cut -c 3-)
 
-echo ${TMP}
+echo "$TMP"
 
 # rm -f $LISTPORTSREF
 # rm -f $LISTPORTS
