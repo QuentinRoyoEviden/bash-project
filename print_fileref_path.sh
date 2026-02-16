@@ -4,9 +4,45 @@
 # file_ref="/home/qroyo/bash_project1/ibnet.13022026"
 # echo "The way to the reference file is : $file_ref"
 
-FILEREF=$1
-IBNET=$2
-SWITCH=$3
+FILEREF=""
+IBNET=""
+SWITCH=""
+
+while [[ $# -gt 0 ]]; do
+        case $1 in
+                --file_ref:)
+                        FILEREF=$2
+                        shift
+                        shift
+                        ;;
+                --new_file:)
+                        IBNET=$2
+                        shift
+                        shift
+                        ;;
+                --switch:)
+                        SWITCH=$2
+                        shift
+                        shift
+                        ;;
+        *)
+                        echo "Unknown argument option $1 Please retry with good arguments"
+                        exit 1
+                        ;;
+        esac
+done
+
+# VERIFY THAT ALL ARGUMENTS ARE FULLFILED
+if [[ -z $FILEREF || -z $IBNET || -z $SWITCH ]]; then
+        echo "One or many arguments are empty. Verify the arguments and retry."
+	exit 1
+fi
+
+# VERIFY THAT ALL ARGUMENTS ARE TRUE
+if [[ -f $FILEREF || -f $IBNET || -f $SWITCH ]]; then
+        echo "One or many arguments are false. Verify the arguments and retry."
+	exit 1
+fi
 
 LISTPORTSREF=$(mktemp /tmp/log.ibnetdiscoverref.XXXXXX)
 LISTPORTS=$(mktemp /tmp/log.ibnetdiscover.XXXXXX)
