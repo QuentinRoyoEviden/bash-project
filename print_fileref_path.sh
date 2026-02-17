@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # my switchs will be "iswi1r2s5c0l2" and "iswi1r0s0c0l1"
-# file_ref="/home/qroyo/bash_project1/ibnet.13022026"
-# echo "The way to the reference file is : $file_ref"
+# FILEREF="/home/qroyo/bash_project1/ibnet.13022026"
+# IBNET="/home/qroyo/bash_project1/ibnet.error"
+# echo "The way to the reference file is : $FILEREF"
+#
 
 FILEREF=""
 IBNET=""
@@ -32,17 +34,28 @@ while [[ $# -gt 0 ]]; do
         esac
 done
 
-# VERIFY THAT ALL ARGUMENTS ARE FULLFILED
+# VERIFY THAT ALL ARGUMENTS ARE FULLFILLED
 if [[ -z $FILEREF || -z $IBNET || -z $SWITCH ]]; then
         echo "One or many arguments are empty. Verify the arguments and retry."
 	exit 1
 fi
 
 # VERIFY THAT ALL ARGUMENTS ARE TRUE
-if [[ -f $FILEREF || -f $IBNET || -f $SWITCH ]]; then
-        echo "One or many arguments are false. Verify the arguments and retry."
+if [[ ! -f $FILEREF ]]; then
+	echo "One or many arguments are false ($FILEREF). Verify the arguments and retry."
 	exit 1
 fi
+
+if [[ ! -f $IBNET ]]; then
+        echo "One or many arguments are false ($IBNET). Verify the arguments and retry."
+        exit 1
+fi
+
+if ! grep -q "$SWITCH" "$FILEREF"; then
+	echo "this switch $SWITCH doesn't exist in the file, please verify your argument and retry."
+	exit 1
+fi
+
 
 LISTPORTSREF=$(mktemp /tmp/log.ibnetdiscoverref.XXXXXX)
 LISTPORTS=$(mktemp /tmp/log.ibnetdiscover.XXXXXX)
