@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# my switchs will be "iswi1r2s5c0l2" and "iswi4r4s1c7l1"
-# FILEREF="/home/qroyo/bash_project1/ibnet.13022026"
-# IBNET="/home/qroyo/bash_project1/ibnet.error"
-# echo "The way to the reference file is : $FILEREF"
-# These examples helped me to realise the format of the switch condtion : grep '^foo$' filename and grep '[vV][iI][Vv][Ee][kK]' filename
-
 FILEREF=""
 SWITCH=""
 LISTPORTSREF=$(mktemp /tmp/log.ibnetdiscoverref.XXXXXX)
@@ -69,11 +63,14 @@ ibnetdiscover | grep -P "(?=.*$SWITCH)(?=.*base port)" -A 100 ${IBNET} | sed '/M
 # COMPARE THE RESULTS OF THE TWO FILES AND DISPLAYS ONLY THE MISSING LINE(S)
 TMP=$(diff ${LISTPORTSREF} ${LISTPORTS} | grep "HDR$" | cut -c 3-)
 
+# DISPLAY THE RESULT OF THE COMPARISON IN THE TERMINAL
 echo "$TMP"
 
+# LET US KNOW WHEN THERE ARE NO DIFFERENCE BETWEEN THE FILES
 if [[ -z "$TMP" ]]; then
         echo "No difference found for this switch ($SWITCH)."
 fi
 
+# DELETE TEMPORARY FILES TO AVOID OVERLOADING STORAGE
 rm -f $LISTPORTSREF
 rm -f $LISTPORTS
