@@ -27,7 +27,7 @@ while [[ $# -gt 0 ]]; do
                         ;;
 				--help)
 						echo "usage: ./ibnetdiscover_qr_twofiles.sh [--help] --ibnet_ref= REFERENCE-FILE [--ibnet= NEW-FILE] --switchs= SWITCH-NAME"
-						exit 0
+						exit 1
 						;;
         *)
                         echo "Unknown flag $1 Please retry with good arguments"
